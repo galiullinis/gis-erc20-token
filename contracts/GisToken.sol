@@ -54,8 +54,9 @@ contract GisToken {
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool){
         require(allowance(_from, msg.sender) >= _value, "incorrect allowance.");
         _transfer(_from, _to, _value);
-
-        _allowances[_from][msg.sender] -= _value;
+        unchecked {
+            _allowances[_from][msg.sender] -= _value;            
+        }
         emit Approval(_from, msg.sender, _allowances[_from][msg.sender]);
 
         return true;
@@ -63,11 +64,12 @@ contract GisToken {
 
     function _transfer(address _from, address _to, uint256 _value) private {
         require(_to != address(0), "try to send tokens to the zero address.");
-        require(_balances[_from] >= _value && 
-                _balances[_to] + _value >= _balances[_to], "not enough tokens on sender balance or recipient balance overflow.");
-        _balances[_from] -= _value;
-        _balances[_to] += _value;
-
+        require(_balances[_from] >= _value, "not enough tokens on sender balance.");
+        unchecked {
+            _balances[_from] -= _value;
+            _balances[_to] += _value;    
+        }
+        
         emit Transfer(_from, _to, _value);
     }
 
@@ -91,8 +93,10 @@ contract GisToken {
     
     function burn(address account, uint256 amount) onlyOwner processable(account, amount) public virtual {
         require(_balances[account] >= amount, "burn amount larger than account balance.");
-        _balances[account] -= amount;
-        totalSupply -= amount;
+        unchecked {
+            _balances[account] -= amount;
+            totalSupply -= amount;    
+        }
         emit Transfer(account, address(0), amount);
     }
 

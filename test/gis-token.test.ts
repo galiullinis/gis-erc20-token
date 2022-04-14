@@ -84,7 +84,7 @@ describe("GisToken", () => {
 
         it("not enough balance check", async () => {
             const incorrectAmount = 5000000
-            const notEnoughBalanceRevertedMessage = "not enough tokens on sender balance or recipient balance overflow."
+            const notEnoughBalanceRevertedMessage = "not enough tokens on sender balance."
             const tx = gisToken.connect(account2).transfer(account3.address, incorrectAmount)
             await expect(tx).to.be.revertedWith(notEnoughBalanceRevertedMessage)
         })
