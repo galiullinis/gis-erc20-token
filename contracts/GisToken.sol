@@ -81,7 +81,6 @@ contract GisToken {
     }
 
     function allowance(address _owner, address _spender) public view returns(uint256){
-        require(_owner != address(0) && _spender != address(0), "incorrect address.");
         return _allowances[_owner][_spender];
     }
 

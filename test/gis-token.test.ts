@@ -52,11 +52,6 @@ describe("GisToken", () => {
             const spenderZeroAddressRevertedMessage = "spender address should not be the zero address."
             await expect(gisToken.connect(account2).approve(ethers.constants.AddressZero, approvalAmount)).to.be.revertedWith(spenderZeroAddressRevertedMessage)
         })
-
-        it("should not be possible to get allowance to the zero address", async () => {
-            const zeroAddressRevertedMessage = "incorrect address."
-            await expect(gisToken.allowance(ethers.constants.AddressZero, ethers.constants.AddressZero)).to.be.revertedWith(zeroAddressRevertedMessage)
-        })
     
         it("approve and allowance test", async () => {            
             const tx = await gisToken.connect(account2).approve(account3.address, approvalAmount);
